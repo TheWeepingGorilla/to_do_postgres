@@ -25,6 +25,11 @@ class Task
   def ==(another_task)
     self.name == another_task.name && self.list_id = another_task.list_id
   end
+
+  def self.delete_task name
+    DB.exec("DELETE FROM tasks WHERE name = '#{name}';")
+  end
+
 end
 
 

@@ -15,6 +15,7 @@ def list_menu
     puts " D > Delete a list"
     puts " V > View lists"
     puts " T > Add a task"
+    puts " R > Remove a task"
     puts " S > Show tasks"
     puts " X > Exit"
     puts "Please select an option from above:"
@@ -28,6 +29,8 @@ def list_menu
       view_lists
     elsif choice == "T"
       add_task
+    elsif choice == "R"
+      delete_task
     elsif choice == "S"
       show_tasks
     elsif choice == "X"
@@ -76,6 +79,13 @@ def show_tasks
   tasks.each do |objects|
     puts objects.list_id.to_s + " " + objects.name
   end
+end
+
+def delete_task
+  view_lists
+  puts "Enter task name"
+  task_name = gets.chomp
+  Task.delete_task(task_name)
 end
 
 welcome
