@@ -1,14 +1,15 @@
 require 'pg'
 
 class List
-  attr_accessor :name
+  attr_accessor :name, :id
 
-  def initialize (name)
+  def initialize (name,id = nil)
     @name = name
+    @id = id
   end
 
-  def ==(another_task)
-    self.name == another_task.name
+  def ==(another_list)
+    self.name == another_list.name && self.id == another_list.id
   end
 
   def self.all
@@ -16,12 +17,14 @@ class List
     lists = []
     results.each do |result|
       name = result['name']
-      lists << List.new(name)
+      id = result['id'].to_i
+      lists << List.new(name,id)
     end
     lists
   end
 
   def save
-    DB.exec("INSERT INTO lists (name) VALUES ('#{@name}');")
+    results = DB.exec("INSERT INTO lists (name) VALUES ('#{@name}') RETURNING id;")
+    @id = results.first['id'].to_i
   end
 end
