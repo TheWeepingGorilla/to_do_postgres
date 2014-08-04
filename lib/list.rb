@@ -27,4 +27,9 @@ class List
     results = DB.exec("INSERT INTO lists (name) VALUES ('#{@name}') RETURNING id;")
     @id = results.first['id'].to_i
   end
+
+  def self.delete_list index
+    DB.exec("DELETE FROM lists WHERE id = #{index};")
+    DB.exec("DELETE FROM tasks WHERE list_id = #{index}")
+  end
 end
